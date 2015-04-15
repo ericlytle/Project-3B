@@ -67,7 +67,11 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StringTokenizer.h" />
+    <ClInclude Include="Binary_Search_Tree.h" />
+    <ClInclude Include="Binary_Tree.h" />
+    <ClInclude Include="BTNode.h" />
+    <ClInclude Include="String_Tokenizer.h" />
+    <ClInclude Include="Syntax_Error.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
