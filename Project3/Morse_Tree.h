@@ -2,6 +2,7 @@
 #include <istream>
 #include <fstream>
 #include <string>
+#include <map>
 
 using namespace std;
 
@@ -11,15 +12,57 @@ class Morse_Tree
 public:
 	void buildTree();
 	Morse_Tree<item_type>();
+	void Encode(string toBeEncoded);
+	void PopulateMap();
+	string getEncodedMessage();
 private:
 	BTNode<item_type>* root;
 	BTNode<item_type>* dummy;
+	map<item_type, item_type> messageEncoder;
+	int index;
+	string encodedMessage, WHITESPACE;
 };
+
+template<typename item_type>
+string Morse_Tree<item_type>::getEncodedMessage()
+{
+	return encodedMessage;
+}
+
+template<typename item_type>
+void Morse_Tree<item_type>::PopulateMap()
+{
+	ifstream fin;
+	string tempString;
+	fin.open("morse.txt");
+	while (!fin.eof())
+	{
+		getline(fin, tempString);
+		messageEncoder[tempString.substr(0,1)] = tempString.substr(1, string::npos);
+	}
+}
+
+template<typename item_type>
+void Morse_Tree<item_type>::Encode(string toBeEncoded)
+{
+	
+	if (index == toBeEncoded.length())
+		return;
+	string temp(1,toBeEncoded[index]);
+	encodedMessage += messageEncoder[temp];
+	encodedMessage += WHITESPACE;
+	++index;
+	Encode(toBeEncoded);
+	return;
+
+}
 
 template<typename item_type>
 Morse_Tree<item_type>::Morse_Tree(){
 	root = new BTNode<item_type>("ROOT");
 	dummy = new BTNode<item_type>("DUMMY");
+	index = 0;
+	WHITESPACE = " ";
 }
 
 template<typename item_type>
