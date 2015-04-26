@@ -14,6 +14,7 @@ private:
 	map<key_type, data_type> messageEncoder;
 	int index;
 	string encodedMessage, WHITESPACE;
+	ifstream inputFile;
 
 };
 
@@ -23,6 +24,7 @@ Encoder<key_type, data_type>::Encoder()
 	index = 0;
 	encodedMessage = "";
 	WHITESPACE = " ";
+	inputFile.open("morse.txt");
 }
 
 template<typename key_type, typename data_type>
@@ -34,24 +36,24 @@ string Encoder<key_type, data_type>::getEncodedMessage()
 template<typename key_type, typename data_type>
 void Encoder<key_type, data_type>::PopulateMap()
 {
-	ifstream fin;
 	string tempString;
-	fin.open("morse.txt");
-	while (!fin.eof())
+	key_type keyValue;
+	while (!inputFile.eof())
 	{
-		getline(fin, tempString);
-		messageEncoder[tempString.substr(0, 1)] = tempString.substr(1, string::npos);
+		getline(inputFile, tempString);
+		keyValue = tempString[0];
+		messageEncoder[keyValue] = tempString.substr(1, string::npos);
 	}
 }
 
 template<typename key_type, typename data_type>
 void Encoder<key_type, data_type>::Encode(string toBeEncoded)
 {
-
+	key_type keyValue;
 	if (index == toBeEncoded.length())
 		return;
-	string temp(1, toBeEncoded[index]);
-	encodedMessage += messageEncoder[temp];
+	keyValue = toBeEncoded[index];
+	encodedMessage += messageEncoder[keyValue];
 	encodedMessage += WHITESPACE;
 	++index;
 	Encode(toBeEncoded);
