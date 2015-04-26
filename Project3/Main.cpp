@@ -10,9 +10,10 @@ using namespace std;
 int main(){ 
 	Encoder<char, string> enc;
 	Morse_Tree<string> MT;
-	MT.PopulateMap();
-	MT.Encode("eric");
-	cout << MT.getEncodedMessage() << endl;
+	Encoder<char, string> encoder;
+	encoder.PopulateMap();
+	encoder.Encode("eric");
+	cout << encoder.getEncodedMessage() << endl;
 
 
 	system("pause");

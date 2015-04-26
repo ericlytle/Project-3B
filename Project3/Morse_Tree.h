@@ -12,72 +12,34 @@ class Morse_Tree
 public:
 	void buildTree();
 	Morse_Tree<item_type>();
-	void Encode(string toBeEncoded);
-	void PopulateMap();
-	string getEncodedMessage();
+	string decode(string encodedMessage); //to be implemented. 
 private:
 	BTNode<item_type>* root;
 	BTNode<item_type>* dummy;
-	map<item_type, item_type> messageEncoder;
+	string decodedMessage;
+	ifstream inputFile;
 	int index;
-	string encodedMessage, WHITESPACE;
+
 };
-
-template<typename item_type>
-string Morse_Tree<item_type>::getEncodedMessage()
-{
-	return encodedMessage;
-}
-
-template<typename item_type>
-void Morse_Tree<item_type>::PopulateMap()
-{
-	ifstream fin;
-	string tempString;
-	fin.open("morse.txt");
-	while (!fin.eof())
-	{
-		getline(fin, tempString);
-		messageEncoder[tempString.substr(0,1)] = tempString.substr(1, string::npos);
-	}
-}
-
-template<typename item_type>
-void Morse_Tree<item_type>::Encode(string toBeEncoded)
-{
-	
-	if (index == toBeEncoded.length())
-		return;
-	string temp(1,toBeEncoded[index]);
-	encodedMessage += messageEncoder[temp];
-	encodedMessage += WHITESPACE;
-	++index;
-	Encode(toBeEncoded);
-	return;
-
-}
 
 template<typename item_type>
 Morse_Tree<item_type>::Morse_Tree(){
 	root = new BTNode<item_type>("ROOT");
 	dummy = new BTNode<item_type>("DUMMY");
 	index = 0;
-	WHITESPACE = " ";
+	inputFile.open("morse.txt");
 }
 
 template<typename item_type>
 void Morse_Tree<item_type>::buildTree()
 {
-
-	ifstream file;
 	string data;
 	string value;
 	string morse;
-	file.open("morse.txt");
-	while (!file.eof())
+	while (!inputFile.eof())
 	{
 		dummy = root;
-		getline(file, data);
+		getline(inputFile, data);
 		value = data[0];
 		morse = data.substr(1, string::npos);
 		for (string::iterator it = morse.begin(); it != morse.end(); ++it)

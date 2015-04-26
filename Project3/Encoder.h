@@ -40,19 +40,21 @@ void Encoder<key_type, data_type>::PopulateMap()
 	while (!fin.eof())
 	{
 		getline(fin, tempString);
-		messageEncoder[tempString[0]] = tempString.substr(1, string::npos);
+		messageEncoder[tempString.substr(0, 1)] = tempString.substr(1, string::npos);
 	}
 }
 
 template<typename key_type, typename data_type>
 void Encoder<key_type, data_type>::Encode(string toBeEncoded)
 {
+
 	if (index == toBeEncoded.length())
 		return;
-	encodedMessage += messageEncoder[toBeEncoded[index]];
+	string temp(1, toBeEncoded[index]);
+	encodedMessage += messageEncoder[temp];
 	encodedMessage += WHITESPACE;
 	++index;
 	Encode(toBeEncoded);
 	return;
-	
+
 }
