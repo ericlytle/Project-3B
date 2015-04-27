@@ -14,7 +14,7 @@ class Morse_Tree
 public:
 	Morse_Tree<item_type>();
 	void buildTree(string fileName);
-	string decode(string encodedMessage); //implemented. 
+	string decode(string encodedMessage); //wrapper 
 	void decode(string &code, string::iterator &iter, BTNode<item_type>* &tree, string& decodedPhrase);
 
 private:
@@ -51,7 +51,7 @@ void Morse_Tree<item_type>::buildTree(string fileName)
 	{
 		dummy = root;
 		getline(inputFile, data);
-		value = data[0];
+		value = data[0];   //VALUE and MORSE contain the information to build a MAP
 		morse = data.substr(1, string::npos);
 		for (string::iterator it = morse.begin(); it != morse.end(); ++it)
 		{
@@ -77,9 +77,9 @@ string Morse_Tree<item_type>::decode(string encodedMessage){
 	string decodedPhrase, temp;
 	string::iterator iter;
 
-	while(tokensPhrase.has_more_tokens()){
+	while(tokensPhrase.has_more_tokens()){//get entire word
 		String_Tokenizer tokensWord(tokensPhrase.next_token(), " ");
-		while (tokensWord.has_more_tokens())
+		while (tokensWord.has_more_tokens())//get letter
 		{
 			decode(temp = tokensWord.next_token(), iter = temp.begin(), root, decodedPhrase);
 		}

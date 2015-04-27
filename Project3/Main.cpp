@@ -8,8 +8,8 @@ using namespace std;
 
 
 int main(){ 
-	Morse_Tree<string> MT;
-	MT.buildTree("morse.txt");
+	Morse_Tree<string> MT; //I feel that morse tree should be a single object contining
+	MT.buildTree("morse.txt");//build tree, encode, decode; could be inclusive
 	Encoder<char, string> encoder;
 	encoder.PopulateMap("morse.txt");
 	encoder.Encode("eric luke brad");
