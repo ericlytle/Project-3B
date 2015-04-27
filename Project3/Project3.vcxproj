@@ -75,6 +75,9 @@
     <ClInclude Include="String_Tokenizer.h" />
     <ClInclude Include="Syntax_Error.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="morse.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
