@@ -71,7 +71,7 @@
     <ClInclude Include="Binary_Tree.h" />
     <ClInclude Include="BTNode.h" />
     <ClInclude Include="Encoder.h" />
-    <ClInclude Include="Morse_Tree.h" />
+    <ClInclude Include="Morse.h" />
     <ClInclude Include="String_Tokenizer.h" />
     <ClInclude Include="Syntax_Error.h" />
   </ItemGroup>

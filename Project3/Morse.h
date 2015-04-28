@@ -9,32 +9,42 @@
 using namespace std;
 
 template<typename item_type>
-class Morse_Tree
+class Morse
 {
 public:
-	Morse_Tree<item_type>();
-	void buildTree(string fileName);
+	Morse<item_type>(string fileName);
 	string decode(string encodedMessage); //wrapper 
 	void decode(string &code, string::iterator &iter, BTNode<item_type>* &tree, string& decodedPhrase);
-
+	string encode(string toBeEncoded);
 private:
+	map<char, string> encoder;
 	BTNode<item_type>* root;
 	BTNode<item_type>* dummy;
-	string decodedMessage;
+	string decodedMessage, encodedMessage;
+	string WHITESPACE, WORD_DELIM;
 	ifstream inputFile;
+	void buildTree();//to be moved
 	void openFile(string fileName);
 	int index;
+
 };
 
+
 template<typename item_type>
-Morse_Tree<item_type>::Morse_Tree(){
+Morse<item_type>::Morse(string fileName){
 	root = new BTNode<item_type>("ROOT");
 	dummy = new BTNode<item_type>("DUMMY");
 	index = 0;
+	WHITESPACE = " ";
+	WORD_DELIM = "| ";
+	encodedMessage = "";
+	openFile(fileName);
+	buildTree();
+	inputFile.close();
 }
 
 template<typename item_type>
-void Morse_Tree<item_type>::openFile(string fileName){
+void Morse<item_type>::openFile(string fileName){
 	inputFile.open(fileName);
 	if (!inputFile){
 		throw std::runtime_error(fileName + " File Not Found");
@@ -43,16 +53,17 @@ void Morse_Tree<item_type>::openFile(string fileName){
 }
 
 template<typename item_type>
-void Morse_Tree<item_type>::buildTree(string fileName)
+void Morse<item_type>::buildTree()
 {
-	openFile(fileName);
-	string data, value, morse;
+	string data, morse;
+	char value;
 	while (!inputFile.eof())
 	{
 		dummy = root;
 		getline(inputFile, data);
-		value = data[0];   //VALUE and MORSE contain the information to build a MAP
+		value = data[0]; 
 		morse = data.substr(1, string::npos);
+		encoder[value] = morse; //builds map
 		for (string::iterator it = morse.begin(); it != morse.end(); ++it)
 		{
 			if (*it == '.')
@@ -72,7 +83,7 @@ void Morse_Tree<item_type>::buildTree(string fileName)
 	}
 }
 template<typename item_type>
-string Morse_Tree<item_type>::decode(string encodedMessage){
+string Morse<item_type>::decode(string encodedMessage){
 	String_Tokenizer tokensPhrase(encodedMessage, ",");
 	string decodedPhrase, temp;
 	string::iterator iter;
@@ -89,7 +100,7 @@ string Morse_Tree<item_type>::decode(string encodedMessage){
 }
 
 template<typename item_type>
-void Morse_Tree<item_type>::decode(string &code, string::iterator &iter, BTNode<item_type>* &tree, string& decodedPhrase){
+void Morse<item_type>::decode(string &code, string::iterator &iter, BTNode<item_type>* &tree, string& decodedPhrase){
 	if (iter == code.end())
 	{
 		decodedPhrase += tree->data;
@@ -99,4 +110,16 @@ void Morse_Tree<item_type>::decode(string &code, string::iterator &iter, BTNode<
 		decode(code, ++iter, tree->left, decodedPhrase);
 	else
 		decode(code, ++iter, tree->right, decodedPhrase);
+}
+
+template<typename item_type>
+string Morse<item_type>::encode(string toBeEncoded)
+{
+	if (index == toBeEncoded.length())                     
+		return encodedMessage;
+	toBeEncoded[index] == ' ' ? encodedMessage += WORD_DELIM
+		: encodedMessage += encoder[tolower(toBeEncoded[index])] + WHITESPACE;
+	++index;
+	encode(toBeEncoded);
+	return encodedMessage;
 }

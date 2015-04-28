@@ -1,5 +1,5 @@
 //main
-#include "Morse_Tree.h"
+#include "Morse.h"
 #include "Encoder.h"
 #include <string>
 #include <map>
@@ -8,14 +8,11 @@ using namespace std;
 
 
 int main(){ 
-	Morse_Tree<string> MT; //I feel that morse tree should be a single object contining
-	MT.buildTree("morse.txt");//build tree, encode, decode; could be inclusive
-	Encoder<char, string> encoder;
-	encoder.PopulateMap("morse.txt");
-	encoder.Encode("eric luke brad");
-	cout << encoder.getEncodedMessage();
+	Morse<string> MT("morse.txt");; //I feel that morse tree should be a single object contining
+	cout << MT.encode("Eric brad luke");
 
-	cout << endl << MT.decode(encoder.getEncodedMessage());
+
+	//cout << endl << MT.decode(encoder.getEncodedMessage());
 
 
 	system("pause");

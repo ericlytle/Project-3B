@@ -35,10 +35,10 @@
     <ClInclude Include="Syntax_Error.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Morse_Tree.h">
+    <ClInclude Include="Encoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Encoder.h">
+    <ClInclude Include="Morse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
