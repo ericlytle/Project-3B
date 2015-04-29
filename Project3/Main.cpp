@@ -1,17 +1,23 @@
 //main
 #include "Morse.h"
-#include "Encoder.h"
 #include <string>
-#include <map>
 #include <iostream>
 using namespace std;
 
 
 int main(){ 
-	Morse<string> MT("morse.txt");; //I feel that morse tree should be a single object contining
-	cout << MT.decode("__. _.") << endl; //decode test
-	cout << MT.encode("eric Brad LuKe") << endl; //encode test with random case | is delimiter between words
-
+	Morse<string> MorseCode("morse.txt");
+	
+	cout << MorseCode.decode("._ _... _._.") << endl; //decode test
+	
+	cout << MorseCode.encode("eric Brad LuKe") << endl; //encode test with random case | is delimiter between words
+	
+	cout << MorseCode.decode(MorseCode.encode("eric Brad LuKe"));
+	
+	
+	
+	cout << endl;
 	system("pause");
-
+	return 0;
 }
+

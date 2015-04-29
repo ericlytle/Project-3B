@@ -2,7 +2,6 @@
 #include <istream>
 #include <fstream>
 #include <string>
-#include <sstream>
 #include <map>
 #include "String_Tokenizer.h"
 
@@ -13,8 +12,7 @@ class Morse
 {
 public:
 	Morse<item_type>(string fileName);
-	string decode(string encodedMessage); //wrapper 
-	void decode(string &code, string::iterator &iter, BTNode<item_type>* &tree, string& decodedPhrase);
+	string decode(string encodedMessage);
 	string encode(string toBeEncoded);
 private:
 	map<char, string> encoder;
@@ -23,9 +21,10 @@ private:
 	string decodedMessage, encodedMessage;
 	string WHITESPACE, WORD_DELIM;
 	ifstream inputFile;
-	void buildTree();//to be moved
+	void buildTree();
 	void openFile(string fileName);
 	int index;
+	void decode(string &code, string::iterator &iter, BTNode<item_type>* &tree, string& decodedPhrase);
 
 };
 
@@ -36,7 +35,7 @@ Morse<item_type>::Morse(string fileName){
 	dummy = new BTNode<item_type>("DUMMY");
 	index = 0;
 	WHITESPACE = " ";
-	WORD_DELIM = "| ";
+	WORD_DELIM = "| "; //delim between seperate words in morse code
 	encodedMessage = "";
 	openFile(fileName);
 	buildTree();
@@ -52,6 +51,7 @@ void Morse<item_type>::openFile(string fileName){
 	}
 }
 
+//builds morse code tree from provided morse code text file
 template<typename item_type>
 void Morse<item_type>::buildTree()
 {
@@ -82,9 +82,9 @@ void Morse<item_type>::buildTree()
 		dummy->data = value; //we have reached our desired node. Assign nodes value
 	}
 }
-template<typename item_type>
+template<typename item_type> //wrapper method
 string Morse<item_type>::decode(string encodedMessage){
-	String_Tokenizer tokensPhrase(encodedMessage, ",");
+	String_Tokenizer tokensPhrase(encodedMessage, "|");
 	string decodedPhrase, temp;
 	string::iterator iter;
 

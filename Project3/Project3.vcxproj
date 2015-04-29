@@ -67,13 +67,9 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Binary_Search_Tree.h" />
-    <ClInclude Include="Binary_Tree.h" />
     <ClInclude Include="BTNode.h" />
-    <ClInclude Include="Encoder.h" />
     <ClInclude Include="Morse.h" />
     <ClInclude Include="String_Tokenizer.h" />
-    <ClInclude Include="Syntax_Error.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="morse.txt" />
