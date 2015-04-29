@@ -8,11 +8,18 @@ using namespace std;
 int main(){ 
 	Morse<string> MorseCode("morse.txt");
 	
-	cout << MorseCode.decode("._ _... _._.") << endl; //decode test
+	//test decode of a b c
+	string testMorse = "._ _... _._.";
+	cout << MorseCode.decode(testMorse) << endl; //decode test
 	
-	cout << MorseCode.encode("eric Brad LuKe") << endl; //encode test with random case | is delimiter between words
+	string message = "eric LuKe BrAd";
+
+	cout << "\nMessage: " + message << endl;
+	cout << "Encoded message: ";
+	cout << MorseCode.encode(message) << endl << endl; //encode test with random case | is delimiter between words
 	
-	cout << MorseCode.decode(MorseCode.encode("eric Brad LuKe"));
+	cout << "Decoded message:";
+	cout << MorseCode.decode(MorseCode.encode(message));
 	
 	
 	
