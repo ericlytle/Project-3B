@@ -1,4 +1,5 @@
 #include "BTNode.h"
+#include "Binary_Tree.h"
 #include <istream>
 #include <fstream>
 #include <string>
@@ -8,7 +9,7 @@
 using namespace std;
 
 template<typename item_type>
-class Morse
+class Morse: public Binary_Tree<item_type>
 {
 public:
 	Morse<item_type>(string fileName);
@@ -16,24 +17,31 @@ public:
 	string encode(string toBeEncoded);
 private:
 	map<char, string> encoder;
-	BTNode<item_type>* root;
 	BTNode<item_type>* dummy;
 	string decodedMessage, encodedMessage;
 	string WHITESPACE, WORD_DELIM;
 	ifstream inputFile;
 	void buildTree();
 	void openFile(string fileName);
-	int index;
+	void encode(string toBeEncoded, int index);
 	void decode(string &code, string::iterator &iter, BTNode<item_type>* &tree, string& decodedPhrase);
 
 };
 
+template<typename item_type>
+void Morse<item_type>::encode(string toBeEncoded, int index)
+{
+	if (index == toBeEncoded.length())
+		return;
+	toBeEncoded[index] == ' ' ? encodedMessage += WORD_DELIM
+		: encodedMessage += encoder[tolower(toBeEncoded[index])] + WHITESPACE;
+	encode(toBeEncoded, ++index);
+}
 
 template<typename item_type>
 Morse<item_type>::Morse(string fileName){
-	root = new BTNode<item_type>("ROOT");
+	setRoot(new BTNode<item_type>("ROOT"));
 	dummy = new BTNode<item_type>("DUMMY");
-	index = 0;
 	WHITESPACE = " ";
 	WORD_DELIM = "| "; //delim between seperate words in morse code
 	encodedMessage = "";
@@ -59,13 +67,14 @@ void Morse<item_type>::buildTree()
 	char value;
 	while (!inputFile.eof())
 	{
-		dummy = root;
+		dummy = getRoot(); //root;
 		getline(inputFile, data);
 		value = data[0]; 
 		morse = data.substr(1, string::npos);
 		encoder[value] = morse; //builds map
 		for (string::iterator it = morse.begin(); it != morse.end(); ++it)
 		{
+
 			if (*it == '.')
 			{
 				if(dummy->left == NULL) //prevents access read violation
@@ -113,13 +122,9 @@ void Morse<item_type>::decode(string &code, string::iterator &iter, BTNode<item_
 }
 
 template<typename item_type>
-string Morse<item_type>::encode(string toBeEncoded)
+string Morse<item_type>::encode(string toBeEncoded) //wrapper
 {
-	if (index == toBeEncoded.length())                     
-		return encodedMessage;
-	toBeEncoded[index] == ' ' ? encodedMessage += WORD_DELIM
-		: encodedMessage += encoder[tolower(toBeEncoded[index])] + WHITESPACE;
-	++index;
-	encode(toBeEncoded);
+	int index = 0;
+	encode(toBeEncoded, index);
 	return encodedMessage;
 }
