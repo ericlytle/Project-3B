@@ -6,8 +6,11 @@
 #include <map>
 #include "String_Tokenizer.h"
 
+//authors eric lytle, luke mcduff, brad van wick
+
 using namespace std;
 
+//class for specifially encoding and decoding morse code string and text
 template<typename item_type>
 class Morse: public Binary_Tree<item_type>
 {
@@ -21,22 +24,12 @@ private:
 	string decodedMessage, encodedMessage;
 	string WHITESPACE, WORD_DELIM;
 	ifstream inputFile;
-	void buildTree();
+	void buildTreeAndMap();
 	void openFile(string fileName);
 	void encode(string toBeEncoded, int index);
 	void decode(string &code, string::iterator &iter, BTNode<item_type>* &tree, string& decodedPhrase);
 
 };
-
-template<typename item_type>
-void Morse<item_type>::encode(string toBeEncoded, int index)
-{
-	if (index == toBeEncoded.length())
-		return;
-	toBeEncoded[index] == ' ' ? encodedMessage += WORD_DELIM
-		: encodedMessage += encoder[tolower(toBeEncoded[index])] + WHITESPACE;
-	encode(toBeEncoded, ++index);
-}
 
 template<typename item_type>
 Morse<item_type>::Morse(string fileName){
@@ -46,7 +39,7 @@ Morse<item_type>::Morse(string fileName){
 	WORD_DELIM = "| "; //delim between seperate words in morse code
 	encodedMessage = "";
 	openFile(fileName);
-	buildTree();
+	buildTreeAndMap();
 	inputFile.close();
 }
 
@@ -61,7 +54,7 @@ void Morse<item_type>::openFile(string fileName){
 
 //builds morse code tree from provided morse code text file
 template<typename item_type>
-void Morse<item_type>::buildTree()
+void Morse<item_type>::buildTreeAndMap()
 {
 	string data, morse;
 	char value;
@@ -81,11 +74,15 @@ void Morse<item_type>::buildTree()
 					dummy->left = new BTNode<item_type>("DUMMY");
 				dummy = dummy->left;
 			}
-			if (*it == '_')
+			else if (*it == '_')
 			{
 				if (dummy->right == NULL) //prevents access read violation
 					dummy->right = new BTNode<item_type>("DUMMY");
 				dummy = dummy->right;
+			}
+			else
+			{
+				throw std::runtime_error(" Bad Data Found");
 			}
 		}
 		dummy->data = value; //we have reached our desired node. Assign nodes value
@@ -108,6 +105,7 @@ string Morse<item_type>::decode(string encodedMessage){
 	return decodedPhrase;
 }
 
+//decodes a string of morse code
 template<typename item_type>
 void Morse<item_type>::decode(string &code, string::iterator &iter, BTNode<item_type>* &tree, string& decodedPhrase){
 	if (iter == code.end())
@@ -119,12 +117,25 @@ void Morse<item_type>::decode(string &code, string::iterator &iter, BTNode<item_
 		decode(code, ++iter, tree->left, decodedPhrase);
 	else
 		decode(code, ++iter, tree->right, decodedPhrase);
+
+	
 }
 
+//wrapper for encoding a string of user text
 template<typename item_type>
-string Morse<item_type>::encode(string toBeEncoded) //wrapper
+string Morse<item_type>::encode(string toBeEncoded) 
 {
 	int index = 0;
 	encode(toBeEncoded, index);
 	return encodedMessage;
+}
+
+template<typename item_type>
+void Morse<item_type>::encode(string toBeEncoded, int index)
+{
+	if (index == toBeEncoded.length())
+		return;
+	toBeEncoded[index] == ' ' ? encodedMessage += WORD_DELIM
+		: encodedMessage += encoder[tolower(toBeEncoded[index])] + WHITESPACE;
+	encode(toBeEncoded, ++index);
 }
