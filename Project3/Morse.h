@@ -117,7 +117,6 @@ void Morse<item_type>::decode(string &code, string::iterator &iter, BTNode<item_
 		decode(code, ++iter, tree->left, decodedPhrase);
 	else
 		decode(code, ++iter, tree->right, decodedPhrase);
-
 	
 }
 
@@ -125,6 +124,7 @@ void Morse<item_type>::decode(string &code, string::iterator &iter, BTNode<item_
 template<typename item_type>
 string Morse<item_type>::encode(string toBeEncoded) 
 {
+	encodedMessage.clear(); //clear out previously encoded message
 	int index = 0;
 	encode(toBeEncoded, index);
 	return encodedMessage;

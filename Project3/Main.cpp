@@ -17,9 +17,14 @@ int main(){
 	cout << "\nMessage: " + message << endl;
 	cout << "Encoded message: ";
 	cout << MorseCode.encode(message) << endl << endl; //encode test with random case | is delimiter between words
-	
+	MorseCode.encode("u anint my mother");
 	cout << "Decoded message:";
-	cout << MorseCode.decode(MorseCode.encode(message));
+	string var = MorseCode.encode(message);
+	
+	cout << endl << var << endl;
+	cout << MorseCode.decode(var);
+
+	
 	
 	
 	
